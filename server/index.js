@@ -1,8 +1,10 @@
 import sqlite3 from "sqlite3";
 import { open } from "sqlite";
 import express from "express";
+import cors from 'cors';
 
 const app = express();
+app.use(cors());
 const port = 3234;
 
 app.get("/api", async (req, res) => {
