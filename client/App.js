@@ -33,6 +33,11 @@ const App = () => {
       setLog(await result.json());
     };
     init();
+    const interval = setInterval(async () => {
+      const result = await fetch("/api");
+      setLog(await result.json());
+    }, 1000 * 60);
+    return () => clearInterval(interval);
   }, []);
   return log.length > 0 ? (
     <div>
