@@ -54,7 +54,7 @@ app.get("/api", async (req, res) => {
     Object.entries(hours).map(([hour, { counts }]) => {
       const averageCount =
         counts.reduce((acc, count) => acc + count, 0) / counts.length;
-      stats.days[day].hours[hour].average = averageCount;
+      stats.days[day].hours[hour].average = Math.round(averageCount);
     });
   });
   res.json({ log: results, stats });
