@@ -9,22 +9,32 @@ const port = 3234;
 
 const hourIndexes = [...Array(24).keys()];
 const dayIndexes = [...Array(7).keys()];
-const stats = {
-  hours: hourIndexes.reduce(
-    (acc, hourIndex) => ({
-      ...acc,
-      [hourIndex]: [],
-    }),
-    {}
-  ),
+const statsTemplate = () => ({
   days: dayIndexes.reduce(
     (acc, dayIndex) => ({
       ...acc,
-      [dayIndex]: [],
+      [dayIndex]: {
+        name: [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wedneday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ][dayIndex],
+        hours: hourIndexes.reduce(
+          (acc, hourIndex) => ({
+            ...acc,
+            [hourIndex]: { counts: [] },
+          }),
+          {}
+        ),
+      },
     }),
     {}
   ),
-};
+});
 
 app.get("/api", async (req, res) => {
   const db = await open({
@@ -32,21 +42,22 @@ app.get("/api", async (req, res) => {
     driver: sqlite3.Database,
   });
   const results = await db.all("SELECT * FROM Logs");
-  const resultStats = results.reduce((acc, result) => {
-    const date = new Date(result.when);
+  const stats = statsTemplate();
+  // split counts into days, then hours
+  results.map(({ when, count }) => {
+    const date = new Date(when);
     const [hour, day] = [date.getHours(), date.getDay()];
-    return {
-      days: {
-        ...acc.days,
-        [day]: [...acc.days[day], result],
-      },
-      hours: {
-        ...acc.hours,
-        [hour]: [...acc.hours[hour], result],
-      },
-    };
-  }, stats);
-  res.json({ log: results, resultStats });
+    stats.days[day].hours[hour].counts.push(count);
+  });
+  // compute averages
+  Object.entries(stats.days).map(([day, { hours }]) => {
+    Object.entries(hours).map(([hour, { counts }]) => {
+      const averageCount =
+        counts.reduce((acc, count) => acc + count, 0) / counts.length;
+      stats.days[day].hours[hour].average = averageCount;
+    });
+  });
+  res.json({ log: results, stats });
 });
 
 app.use(express.static("dist"));
