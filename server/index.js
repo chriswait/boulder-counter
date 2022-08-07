@@ -3,7 +3,7 @@ import { open } from "sqlite";
 import express from "express";
 
 const app = express();
-const port = 3000;
+const port = 3234;
 
 app.get("/api", async (req, res) => {
   const db = await open({
