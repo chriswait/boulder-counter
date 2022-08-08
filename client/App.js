@@ -14,6 +14,11 @@ import {
 import { Line } from "react-chartjs-2";
 import "chartjs-adapter-date-fns";
 
+function heatMapColorforValue(value) {
+  var h = (1.0 - value) * 240;
+  return "hsl(" + h + ", 80%, 70%)";
+}
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -53,7 +58,7 @@ const App = () => {
               maintainAspectRatio: true,
               plugins: {
                 legend: {
-                  position: "top",
+                  position: false,
                 },
               },
               scales: {
@@ -90,24 +95,49 @@ const App = () => {
       {stats && (
         <div
           style={{
+            marginTop: 20,
             display: "grid",
             gridTemplateColumns: `repeat(${
               Object.keys(stats.days).length + 1
             }, 1fr)`,
+            textAlign: "center",
+            gridGap: 5,
           }}
         >
-          <div>
-            <div>day/hour</div>
-            {[...Array(24).keys()].map((_, index) => (
-              <div key={index}>{index}</div>
-            ))}
+          <div style={{ padding: 10, borderRight: "2px solid lightgrey" }}>
+            <div style={{ fontWeight: "bold" }}>day/hour</div>
+            {[...Array(24).keys()]
+              .filter((hour) => hour >= 6 && hour <= 22)
+              .map((hour) => (
+                <div key={hour}>
+                  {hour % 12 || 12}
+                  {hour < 12 || hour === 24 ? "am" : "pm"}
+                </div>
+              ))}
           </div>
           {Object.entries(stats.days).map(([dayIndex, { name, hours }]) => (
-            <div key={dayIndex}>
-              {name}
-              {Object.entries(hours).map(([hourIndex, { average, counts }]) => (
-                <div key={hourIndex}>{counts.length === 0 ? "-" : average}</div>
-              ))}
+            <div
+              key={dayIndex}
+              style={{
+                borderRight: "2px solid lightgrey",
+                padding: 10,
+              }}
+            >
+              <div style={{ fontWeight: "bold" }}>{name}</div>
+              {Object.entries(hours)
+                .filter(([hourIndex]) => hourIndex >= 6 && hourIndex <= 22)
+                .map(([hourIndex, { average, counts }]) => (
+                  <div
+                    key={hourIndex}
+                    style={{
+                      backgroundColor: average
+                        ? heatMapColorforValue(average / 150)
+                        : undefined,
+                    }}
+                  >
+                    {counts.length === 0 ? "-" : average}
+                  </div>
+                ))}
             </div>
           ))}
         </div>
