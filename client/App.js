@@ -25,7 +25,6 @@ const App = () => {
     <div
       style={{
         height: "100vh",
-        overflowY: "scroll",
         color: "#32308e",
       }}
     >
