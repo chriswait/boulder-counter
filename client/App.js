@@ -102,6 +102,7 @@ const App = () => {
             }, 1fr)`,
             textAlign: "center",
             gridGap: 5,
+            overflowX: "scroll",
           }}
         >
           <div style={{ padding: 10, borderRight: "2px solid lightgrey" }}>
