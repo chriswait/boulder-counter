@@ -1,6 +1,7 @@
 node_modules
 database.db
 .parcel-cache
+yarn-error.log
 dist
 stats.json
 graph.json
