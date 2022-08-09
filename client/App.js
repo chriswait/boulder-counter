@@ -24,7 +24,6 @@ const App = () => {
   return (
     <div
       style={{
-        backgroundColor: "#e37d5f",
         height: "100vh",
         overflowY: "scroll",
         color: "#32308e",
