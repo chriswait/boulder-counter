@@ -1,4 +1,6 @@
-const Status = ({ mostRecentLog }) => {
+import { getDayFromIndex } from "./util.js";
+
+const Status = ({ mostRecentLog, currentStat, currentDay, currentHour }) => {
   const status = mostRecentLog
     ? mostRecentLog.count > 110
       ? "Whoa that's super busy"
@@ -12,6 +14,20 @@ const Status = ({ mostRecentLog }) => {
       ? "That's basically empty"
       : "There's literally nobody there"
     : "";
+
+  const averageCountString =
+    currentStat == undefined
+      ? "...I'm not sure actually"
+      : currentStat.average > 1
+      ? `around ${currentStat.average} people`
+      : currentStat.average === 1
+      ? `around ${currentStat.average} person`
+      : "nobody there";
+
+  const diff =
+    mostRecentLog && currentStat
+      ? Math.abs(mostRecentLog.count - currentStat.average)
+      : undefined;
   return (
     <div style={{ textAlign: "center", fontSize: 30, margin: "60px 0px" }}>
       <div>There's about </div>
@@ -19,10 +35,14 @@ const Status = ({ mostRecentLog }) => {
         {mostRecentLog.count} people
       </div>
       <div>climbing right now</div>
-      <div>
+      <div style={{ marginBottom: 80 }}>
         (at <a href="https://www.boulderbrighton.com/">Boulder Brighton</a>)
       </div>
       <p style={{ fontStyle: "italic", letterSpacing: 1.3 }}>{status}</p>
+      <div style={{ fontSize: 20 }}>
+        At this time on a {getDayFromIndex(currentDay)}, there's usually{" "}
+        {averageCountString}
+      </div>
     </div>
   );
 };

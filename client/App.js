@@ -21,10 +21,12 @@ const App = () => {
     return () => clearInterval(interval);
   }, []);
   const mostRecentLog = log ? log[log.length - 1] : undefined;
+  const date = new Date();
+  const [hour, day] = [date.getUTCHours(), date.getDay()];
+  const currentStat = stats ? stats.days[day].hours[hour] : undefined;
   return (
     <div
       style={{
-        height: "100vh",
         color: "#32308e",
       }}
     >
@@ -32,9 +34,20 @@ const App = () => {
         <div>Loading</div>
       ) : (
         <div className="container" style={{ marginTop: 30 }}>
-          {mostRecentLog ? <Status mostRecentLog={mostRecentLog} /> : null}
+          {mostRecentLog ? (
+            <Status
+              mostRecentLog={mostRecentLog}
+              currentStat={currentStat}
+              currentDay={day}
+              currentHour={hour}
+            />
+          ) : null}
           {log ? <Graph log={log} /> : "No data"}
-          {stats ? <Table stats={stats} /> : "No status"}
+          {stats ? (
+            <Table stats={stats} currentDay={day} currentHour={hour} />
+          ) : (
+            "No status"
+          )}
         </div>
       )}
     </div>

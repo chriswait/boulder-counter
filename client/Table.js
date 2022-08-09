@@ -3,7 +3,7 @@ function heatMapColorforValue(value) {
   return "hsl(" + h + ", 80%, 70%)";
 }
 
-const Table = ({ stats }) => {
+const Table = ({ stats, currentDay, currentHour }) => {
   const border = "2px solid #32308e";
   return (
     <div
@@ -73,19 +73,27 @@ const Table = ({ stats }) => {
               </div>
               {Object.entries(hours)
                 .filter(([hourIndex]) => hourIndex >= 6 && hourIndex <= 22)
-                .map(([hourIndex, { average, counts }]) => (
-                  <div
-                    key={hourIndex}
-                    style={{
-                      padding: 5,
-                      backgroundColor: average
-                        ? heatMapColorforValue(average / 150)
-                        : undefined,
-                    }}
-                  >
-                    {counts.length === 0 ? "-" : average}
-                  </div>
-                ))}
+                .map(([hourIndex, { average, counts }]) => {
+                  const isCurrent =
+                    +dayIndex === currentDay && +hourIndex === currentHour;
+                  return (
+                    <div
+                      key={hourIndex}
+                      style={{
+                        padding: 5,
+                        backgroundColor: average
+                          ? heatMapColorforValue(average / 150)
+                          : undefined,
+                        boxShadow: isCurrent
+                          ? "0px 0px 7px 4px black"
+                          : undefined,
+                        textDecoration: isCurrent ? "underline" : undefined,
+                      }}
+                    >
+                      {counts.length === 0 ? "-" : average}
+                    </div>
+                  );
+                })}
             </div>
           )
         )}
