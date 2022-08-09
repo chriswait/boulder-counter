@@ -94,11 +94,16 @@ export const computeGraphDataForLog = (log) => {
   };
 };
 
-export const isOpen = (dayIndex, hourIndex) => {
-  if ([0, 1, 3, 5, 6].includes(dayIndex)) {
-    return hourIndex >= 8 && hourIndex < 20;
+export const isOpen = () => {
+  let dateString = new Date().toLocaleString("en-US", {
+    timeZone: "Europe/London",
+  });
+  let date = new Date(dateString);
+  const [hour, day] = [date.getHours(), date.getDay()];
+  if ([0, 1, 3, 5, 6].includes(day)) {
+    return hour >= 8 && hour < 22;
   } else {
     // tuesdays and thursdays
-    return hourIndex >= 6 && hourIndex < 20;
+    return hour >= 6 && hour < 22;
   }
 };
