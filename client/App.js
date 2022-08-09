@@ -35,11 +35,10 @@ const App = () => {
   const [stats, setStats] = useState();
   useEffect(() => {
     const init = async () => {
-      const result = await fetch("/api");
+      const result = await fetch("https://boulder.chriswait.net/api");
       const { log: newLog, stats: newStats } = await result.json();
       setLog(newLog);
       setStats(newStats);
-      console.log(newLog, newStats);
     };
     init();
     const interval = setInterval(async () => {
@@ -47,8 +46,30 @@ const App = () => {
     }, 1000 * 60);
     return () => clearInterval(interval);
   }, []);
+  const mostRecentLog = log ? log[log.length - 1] : undefined;
+  const status = mostRecentLog
+    ? mostRecentLog.count > 110
+      ? "Whoa that's super busy."
+      : mostRecentLog.count > 80
+      ? "That's pretty busy."
+      : mostRecentLog.count > 50
+      ? "That's about average."
+      : mostRecentLog.count > 20
+      ? "That's pretty quiet."
+      : mostRecentLog.count > 0
+      ? "That's basically empty."
+      : "There's literally nobody there."
+    : "";
   return (
     <>
+      {mostRecentLog ? (
+        <div style={{ fontSize: 18, textAlign: "center" }}>
+          <div>There's about </div>
+          <div style={{ fontSize: 32 }}>{mostRecentLog.count}</div>
+          <div>people climbing right now</div>
+          <p>{status}</p>
+        </div>
+      ) : null}
       {log ? (
         <div>
           <Line
@@ -95,18 +116,17 @@ const App = () => {
       {stats && (
         <div
           style={{
+            display: "flex",
             marginTop: 20,
-            display: "grid",
-            gridTemplateColumns: `repeat(${
-              Object.keys(stats.days).length + 1
-            }, 1fr)`,
             textAlign: "center",
-            gridGap: 5,
-            overflowX: "scroll",
           }}
         >
-          <div style={{ padding: 10, borderRight: "2px solid lightgrey" }}>
-            <div style={{ fontWeight: "bold" }}>day/hour</div>
+          <div
+            style={{
+              padding: "10px 0px",
+            }}
+          >
+            <div style={{ fontWeight: "bold" }}>&nbsp;</div>
             {[...Array(24).keys()]
               .filter((hour) => hour >= 6 && hour <= 22)
               .map((hour) => (
@@ -116,31 +136,43 @@ const App = () => {
                 </div>
               ))}
           </div>
-          {Object.entries(stats.days).map(([dayIndex, { name, hours }]) => (
-            <div
-              key={dayIndex}
-              style={{
-                borderRight: "2px solid lightgrey",
-                padding: 10,
-              }}
-            >
-              <div style={{ fontWeight: "bold" }}>{name}</div>
-              {Object.entries(hours)
-                .filter(([hourIndex]) => hourIndex >= 6 && hourIndex <= 22)
-                .map(([hourIndex, { average, counts }]) => (
-                  <div
-                    key={hourIndex}
-                    style={{
-                      backgroundColor: average
-                        ? heatMapColorforValue(average / 150)
-                        : undefined,
-                    }}
-                  >
-                    {counts.length === 0 ? "-" : average}
-                  </div>
-                ))}
-            </div>
-          ))}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: `repeat(${
+                Object.keys(stats.days).length + 1
+              }, 1fr)`,
+              textAlign: "center",
+              gridGap: 5,
+              overflowX: "scroll",
+            }}
+          >
+            {Object.entries(stats.days).map(([dayIndex, { name, hours }]) => (
+              <div
+                key={dayIndex}
+                style={{
+                  borderRight: "2px solid lightgrey",
+                  padding: 10,
+                }}
+              >
+                <div style={{ fontWeight: "bold" }}>{name}</div>
+                {Object.entries(hours)
+                  .filter(([hourIndex]) => hourIndex >= 6 && hourIndex <= 22)
+                  .map(([hourIndex, { average, counts }]) => (
+                    <div
+                      key={hourIndex}
+                      style={{
+                        backgroundColor: average
+                          ? heatMapColorforValue(average / 150)
+                          : undefined,
+                      }}
+                    >
+                      {counts.length === 0 ? "-" : average}
+                    </div>
+                  ))}
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </>
