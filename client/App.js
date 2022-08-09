@@ -25,7 +25,6 @@ const App = () => {
     <div
       style={{
         backgroundColor: "#e37d5f",
-        padding: 20,
         height: "100vh",
         overflowY: "scroll",
         color: "#32308e",
@@ -34,7 +33,7 @@ const App = () => {
       {!log ? (
         <div>Loading</div>
       ) : (
-        <div style={{ marginTop: 30 }}>
+        <div className="container" style={{ marginTop: 30 }}>
           {mostRecentLog ? <Status mostRecentLog={mostRecentLog} /> : null}
           {log ? <Graph log={log} /> : "No data"}
           {stats ? <Table stats={stats} /> : "No status"}

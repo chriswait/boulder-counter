@@ -9,10 +9,9 @@ const Table = ({ stats }) => {
     <div
       style={{
         display: "flex",
-        marginTop: 20,
         textAlign: "center",
-        backgroundColor: "rgba(1,1,1,0.12)",
         border,
+        marginBottom: 40,
       }}
     >
       <div
@@ -22,7 +21,14 @@ const Table = ({ stats }) => {
           backgroundColor: "#ffd89f",
         }}
       >
-        <div style={{ fontWeight: "bold", background: "#c47fff", padding: 5 }}>
+        <div
+          style={{
+            fontWeight: "bold",
+            background: "#c47fff",
+            padding: 5,
+            background: "linear-gradient(40deg, #ffd89f, rgb(196, 127, 255))",
+          }}
+        >
           &nbsp;
         </div>
         {[...Array(24).keys()]
@@ -35,44 +41,54 @@ const Table = ({ stats }) => {
           ))}
       </div>
       <div
+        className="table"
         style={{
           display: "grid",
           gridTemplateColumns: `repeat(${Object.keys(stats.days).length}, 1fr)`,
           textAlign: "center",
           overflowX: "scroll",
           width: "100%",
-          maxWidth: 800,
         }}
       >
-        {Object.entries(stats.days).map(([dayIndex, { name, hours }]) => (
-          <div
-            key={dayIndex}
-            style={{
-              borderRight: border,
-            }}
-          >
+        {Object.entries(stats.days).map(
+          ([dayIndex, { name, hours }], index) => (
             <div
-              style={{ fontWeight: "bold", padding: 5, background: "#c47fff" }}
+              key={dayIndex}
+              style={{
+                minWidth: 84,
+                borderRight:
+                  index === Object.entries(stats.days).length - 1
+                    ? undefined
+                    : border,
+              }}
             >
-              {name}
+              <div
+                style={{
+                  fontWeight: "bold",
+                  padding: 5,
+                  background: "#c47fff",
+                }}
+              >
+                {name}
+              </div>
+              {Object.entries(hours)
+                .filter(([hourIndex]) => hourIndex >= 6 && hourIndex <= 22)
+                .map(([hourIndex, { average, counts }]) => (
+                  <div
+                    key={hourIndex}
+                    style={{
+                      padding: 5,
+                      backgroundColor: average
+                        ? heatMapColorforValue(average / 150)
+                        : undefined,
+                    }}
+                  >
+                    {counts.length === 0 ? "-" : average}
+                  </div>
+                ))}
             </div>
-            {Object.entries(hours)
-              .filter(([hourIndex]) => hourIndex >= 6 && hourIndex <= 22)
-              .map(([hourIndex, { average, counts }]) => (
-                <div
-                  key={hourIndex}
-                  style={{
-                    padding: 5,
-                    backgroundColor: average
-                      ? heatMapColorforValue(average / 150)
-                      : undefined,
-                  }}
-                >
-                  {counts.length === 0 ? "-" : average}
-                </div>
-              ))}
-          </div>
-        ))}
+          )
+        )}
       </div>
     </div>
   );

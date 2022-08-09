@@ -11,6 +11,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import "chartjs-adapter-date-fns";
+import Panel from "./Panel";
 
 ChartJS.register(
   CategoryScale,
@@ -30,7 +31,7 @@ const Graph = ({ log }) => {
     points.push(log[i]);
   }
   return (
-    <div>
+    <Panel>
       <Line
         options={{
           animations: false,
@@ -76,7 +77,7 @@ const Graph = ({ log }) => {
           ],
         }}
       />
-    </div>
+    </Panel>
   );
 };
 
