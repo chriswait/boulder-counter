@@ -67,6 +67,8 @@ const Table = ({ stats, currentDay, currentHour }) => {
                   fontWeight: "bold",
                   padding: 5,
                   background: "#c47fff",
+                  textDecoration:
+                    +dayIndex === currentDay ? "underline" : undefined,
                 }}
               >
                 {name}
