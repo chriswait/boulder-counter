@@ -1,6 +1,12 @@
 import { getDayFromIndex } from "./util.js";
 
-const Status = ({ mostRecentLog, currentStat, currentDay, currentHour }) => {
+const Status = ({
+  mostRecentLog,
+  currentStat,
+  currentDay,
+  currentHour,
+  open,
+}) => {
   const status = mostRecentLog
     ? mostRecentLog.count > 110
       ? "Whoa that's super busy"
@@ -39,6 +45,7 @@ const Status = ({ mostRecentLog, currentStat, currentDay, currentHour }) => {
         (at <a href="https://www.boulderbrighton.com/">Boulder Brighton</a>)
       </div>
       <p style={{ fontStyle: "italic", letterSpacing: 1.3 }}>{status}</p>
+      {!open && <div>(because it's closed)</div>}
       {diff > 20 && (
         <div style={{ fontSize: 20 }}>
           At this time on a {getDayFromIndex(currentDay)}, there's usually{" "}

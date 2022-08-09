@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import fs from "fs";
 const fsPromises = fs.promises;
-import { fetchMostRecent } from "./util.js";
+import { fetchMostRecent, isOpen } from "./util.js";
 
 const app = express();
 app.use(cors());
@@ -14,7 +14,8 @@ app.get("/api", async (req, res) => {
   const statsBuffer = await fsPromises.readFile("stats.json");
   const stats = JSON.parse(statsBuffer);
   const mostRecentLog = await fetchMostRecent();
-  res.json({ graph, stats, mostRecentLog });
+  const open = isOpen();
+  res.json({ graph, stats, mostRecentLog, open });
 });
 
 app.use(express.static("dist"));

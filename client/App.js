@@ -8,6 +8,7 @@ const App = () => {
   const [graph, setGraph] = useState();
   const [mostRecentLog, setMostRecentLog] = useState();
   const [stats, setStats] = useState();
+  const [isOpen, setIsOpen] = useState();
   useEffect(() => {
     const init = async () => {
       // const result = await fetch("https://boulder.chriswait.net/api");
@@ -16,10 +17,12 @@ const App = () => {
         graph: newGraph,
         stats: newStats,
         mostRecentLog: newMostRecentLog,
+        open: newIsOpen,
       } = await result.json();
       setGraph(newGraph);
       setStats(newStats);
       setMostRecentLog(newMostRecentLog);
+      setIsOpen(newIsOpen);
     };
     init();
     const interval = setInterval(async () => {
@@ -42,6 +45,7 @@ const App = () => {
         <div className="container" style={{ marginTop: 30 }}>
           {mostRecentLog ? (
             <Status
+              isOpen={isOpen}
               mostRecentLog={mostRecentLog}
               currentStat={currentStat}
               currentDay={day}

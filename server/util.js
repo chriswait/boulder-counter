@@ -93,3 +93,12 @@ export const computeGraphDataForLog = (log) => {
     datasets,
   };
 };
+
+export const isOpen = (dayIndex, hourIndex) => {
+  if ([0, 1, 3, 5, 6].includes(dayIndex)) {
+    return hourIndex >= 8 && hourIndex < 20;
+  } else {
+    // tuesdays and thursdays
+    return hourIndex >= 6 && hourIndex < 20;
+  }
+};
