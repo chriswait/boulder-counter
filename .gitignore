@@ -2,3 +2,4 @@ node_modules
 database.db
 .parcel-cache
 dist
+stats.json

@@ -1,5 +1,9 @@
 import sqlite3 from "sqlite3";
 import { open } from "sqlite";
+import fs from "fs";
+const fsPromises = fs.promises;
+
+import { computeStatsForLog } from "./util.js";
 
 (async () => {
   const db = await open({
@@ -17,4 +21,8 @@ import { open } from "sqlite";
   db.exec(
     `insert into Logs values ("${new Date().toISOString()}", ${count}, ${capacity})`
   );
+
+  const log = await db.all("SELECT * FROM Logs");
+  const stats = computeStatsForLog(log);
+  fsPromises.writeFile("stats.json", JSON.stringify(stats));
 })();

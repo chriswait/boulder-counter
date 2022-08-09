@@ -73,7 +73,7 @@ const Table = ({ stats, currentDay, currentHour }) => {
               </div>
               {Object.entries(hours)
                 .filter(([hourIndex]) => hourIndex >= 6 && hourIndex <= 22)
-                .map(([hourIndex, { average, counts }]) => {
+                .map(([hourIndex, { average }]) => {
                   const isCurrent =
                     +dayIndex === currentDay && +hourIndex === currentHour;
                   return (
@@ -90,7 +90,7 @@ const Table = ({ stats, currentDay, currentHour }) => {
                         textDecoration: isCurrent ? "underline" : undefined,
                       }}
                     >
-                      {counts.length === 0 ? "-" : average}
+                      {average ?? "-"}
                     </div>
                   );
                 })}
