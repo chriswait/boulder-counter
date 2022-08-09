@@ -3,3 +3,4 @@ database.db
 .parcel-cache
 dist
 stats.json
+graph.json

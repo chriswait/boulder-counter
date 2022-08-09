@@ -10,6 +10,17 @@ export const fetchAll = async () => {
   return results;
 };
 
+export const fetchMostRecent = async () => {
+  const db = await open({
+    filename: "database.db",
+    driver: sqlite3.Database,
+  });
+  const result = await db.get(
+    "SELECT * FROM Logs ORDER BY rowid DESC LIMIT 1;"
+  );
+  return result;
+};
+
 const hourIndexes = [...Array(24).keys()];
 const dayIndexes = [...Array(7).keys()];
 
@@ -58,4 +69,27 @@ export const computeStatsForLog = (log) => {
     });
   });
   return stats;
+};
+
+export const computeGraphDataForLog = (log) => {
+  // let's not draw everything...
+  const points = [];
+  for (var i = 0; i < log.length; i = i + 10) {
+    points.push(log[i]);
+  }
+  const labels = points.map((entry) => {
+    const date = new Date(entry.when);
+    return date;
+  });
+  const datasets = [
+    {
+      label: "count",
+      data: points.map((entry) => entry.count),
+      backgroundColor: "rgba(255, 99, 132, 0.5)",
+    },
+  ];
+  return {
+    labels,
+    datasets,
+  };
 };

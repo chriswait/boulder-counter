@@ -5,14 +5,21 @@ import Graph from "./Graph";
 import Table from "./Table";
 
 const App = () => {
-  const [log, setLog] = useState();
+  const [graph, setGraph] = useState();
+  const [mostRecentLog, setMostRecentLog] = useState();
   const [stats, setStats] = useState();
   useEffect(() => {
     const init = async () => {
-      const result = await fetch("https://boulder.chriswait.net/api");
-      const { log: newLog, stats: newStats } = await result.json();
-      setLog(newLog);
+      // const result = await fetch("https://boulder.chriswait.net/api");
+      const result = await fetch("/api");
+      const {
+        graph: newGraph,
+        stats: newStats,
+        mostRecentLog: newMostRecentLog,
+      } = await result.json();
+      setGraph(newGraph);
       setStats(newStats);
+      setMostRecentLog(newMostRecentLog);
     };
     init();
     const interval = setInterval(async () => {
@@ -20,7 +27,6 @@ const App = () => {
     }, 1000 * 60);
     return () => clearInterval(interval);
   }, []);
-  const mostRecentLog = log ? log[log.length - 1] : undefined;
   const date = new Date();
   const [hour, day] = [date.getUTCHours(), date.getDay()];
   const currentStat = stats ? stats.days[day].hours[hour] : undefined;
@@ -30,7 +36,7 @@ const App = () => {
         color: "#32308e",
       }}
     >
-      {!log ? (
+      {!graph ? (
         <div>Loading</div>
       ) : (
         <div className="container" style={{ marginTop: 30 }}>
@@ -42,7 +48,7 @@ const App = () => {
               currentHour={hour}
             />
           ) : null}
-          {log ? <Graph log={log} /> : "No data"}
+          {graph ? <Graph graph={graph} /> : "No data"}
           {stats ? (
             <Table stats={stats} currentDay={day} currentHour={hour} />
           ) : (

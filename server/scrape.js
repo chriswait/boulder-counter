@@ -3,7 +3,7 @@ import { open } from "sqlite";
 import fs from "fs";
 const fsPromises = fs.promises;
 
-import { computeStatsForLog } from "./util.js";
+import { computeGraphDataForLog, computeStatsForLog } from "./util.js";
 
 (async () => {
   const db = await open({
@@ -24,5 +24,8 @@ import { computeStatsForLog } from "./util.js";
 
   const log = await db.all("SELECT * FROM Logs");
   const stats = computeStatsForLog(log);
-  fsPromises.writeFile("stats.json", JSON.stringify(stats));
+  await fsPromises.writeFile("stats.json", JSON.stringify(stats));
+
+  const graph = computeGraphDataForLog(log);
+  await fsPromises.writeFile("graph.json", JSON.stringify(graph));
 })();

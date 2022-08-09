@@ -24,12 +24,7 @@ ChartJS.register(
   Legend
 );
 
-const Graph = ({ log }) => {
-  // let's not draw everything
-  const points = [];
-  for (var i = 0; i < log.length; i = i + 10) {
-    points.push(log[i]);
-  }
+const Graph = ({ graph }) => {
   return (
     <Panel>
       <Line
@@ -63,19 +58,7 @@ const Graph = ({ log }) => {
             },
           },
         }}
-        data={{
-          labels: points.map((entry) => {
-            const date = new Date(entry.when);
-            return date;
-          }),
-          datasets: [
-            {
-              label: "count",
-              data: points.map((entry) => entry.count),
-              backgroundColor: "rgba(255, 99, 132, 0.5)",
-            },
-          ],
-        }}
+        data={graph}
       />
     </Panel>
   );
