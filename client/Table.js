@@ -19,7 +19,7 @@ const Table = ({ stats, currentDay, currentHour }) => {
         style={{
           borderRight: border,
           textAlign: "center",
-          backgroundColor: "#ffd89f",
+          backgroundColor: "rgba(226, 139, 114, 90%)",
           whiteSpace: "pre",
         }}
       >

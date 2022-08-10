@@ -1,7 +1,7 @@
 const Panel = ({ children }) => (
   <div
     style={{
-      backgroundColor: "#e28b72",
+      backgroundColor: "rgba(226, 139, 114, 90%)",
       padding: 20,
       marginBottom: 40,
     }}
