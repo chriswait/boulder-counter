@@ -89,7 +89,8 @@ const Table = ({ stats, currentDay, currentHour }) => {
                         boxShadow: isCurrent
                           ? "rgba(0, 0, 0, 50%) 0px 0px 6px 1px"
                           : undefined,
-                        textDecoration: isCurrent ? "underline" : undefined,
+                        textDecoration:
+                          average && isCurrent ? "underline" : undefined,
                       }}
                     >
                       {average ?? "-"}
