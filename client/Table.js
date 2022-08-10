@@ -87,7 +87,7 @@ const Table = ({ stats, currentDay, currentHour }) => {
                           ? heatMapColorforValue(average / 150)
                           : undefined,
                         boxShadow: isCurrent
-                          ? "0px 0px 7px 4px black"
+                          ? "rgba(0, 0, 0, 50%) 0px 0px 6px 1px"
                           : undefined,
                         textDecoration: isCurrent ? "underline" : undefined,
                       }}
