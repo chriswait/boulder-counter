@@ -5,7 +5,7 @@ const Status = ({
   currentStat,
   currentDay,
   currentHour,
-  open,
+  isOpen,
 }) => {
   const status = mostRecentLog
     ? mostRecentLog.count > 110
@@ -45,7 +45,7 @@ const Status = ({
         (at <a href="https://www.boulderbrighton.com/">Boulder Brighton</a>)
       </div>
       <p style={{ fontStyle: "italic", letterSpacing: 1.3 }}>{status}</p>
-      {!open && <div>(because it's closed)</div>}
+      {!isOpen && <div>(because it's closed)</div>}
       {diff > 20 && (
         <div style={{ fontSize: 20 }}>
           At this time on a {getDayFromIndex(currentDay)}, there's usually{" "}
