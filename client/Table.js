@@ -46,7 +46,7 @@ const Table = ({ stats, currentDay, currentHour }) => {
           display: "grid",
           gridTemplateColumns: `repeat(${Object.keys(stats.days).length}, 1fr)`,
           textAlign: "center",
-          overflowX: "scroll",
+          overflowX: "auto",
           width: "100%",
         }}
       >
