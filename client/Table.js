@@ -5,6 +5,7 @@ function heatMapColorforValue(value) {
 
 const Table = ({ stats, currentDay, currentHour }) => {
   const border = "2px solid #32308e";
+  const to12Hour = (hour) => hour % 12 || 12;
   return (
     <div
       style={{
@@ -19,6 +20,7 @@ const Table = ({ stats, currentDay, currentHour }) => {
           borderRight: border,
           textAlign: "center",
           backgroundColor: "#ffd89f",
+          whiteSpace: "pre",
         }}
       >
         <div
@@ -32,11 +34,12 @@ const Table = ({ stats, currentDay, currentHour }) => {
           &nbsp;
         </div>
         {[...Array(24).keys()]
-          .filter((hour) => hour >= 6 && hour <= 22)
+          .filter((hour) => hour >= 6 && hour <= 21)
           .map((hour) => (
             <div key={hour} style={{ padding: 5 }}>
-              {hour % 12 || 12}
-              {hour < 12 || hour === 24 ? "am" : "pm"}
+              {/* {hour % 12 || 12}
+              {hour < 12 || hour === 24 ? "am" : "pm"} */}
+              {`${to12Hour(hour)}-${to12Hour(hour + 1)}`}
             </div>
           ))}
       </div>
@@ -74,7 +77,7 @@ const Table = ({ stats, currentDay, currentHour }) => {
                 {name}
               </div>
               {Object.entries(hours)
-                .filter(([hourIndex]) => hourIndex >= 6 && hourIndex <= 22)
+                .filter(([hourIndex]) => hourIndex >= 6 && hourIndex <= 21)
                 .map(([hourIndex, { average }]) => {
                   const isCurrent =
                     +dayIndex === currentDay && +hourIndex === currentHour;
