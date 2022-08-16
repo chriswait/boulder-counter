@@ -1,10 +1,6 @@
-function heatMapColorforValue(value) {
-  var h = (1.0 - value) * 240;
-  return "hsl(" + h + ", 80%, 70%)";
-}
+import { heatMapColorforValue, border } from "./util";
 
 const Table = ({ stats, currentDay, currentHour }) => {
-  const border = "2px solid #32308e";
   const to12Hour = (hour) => hour % 12 || 12;
   return (
     <div

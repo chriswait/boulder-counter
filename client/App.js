@@ -3,12 +3,14 @@ import { useEffect, useState } from "react";
 import Status from "./Status";
 import Graph from "./Graph";
 import Table from "./Table";
+import RouteSettingsEvents from "./RouteSettingsEvents";
 
 const App = () => {
   const [graph, setGraph] = useState();
   const [mostRecentLog, setMostRecentLog] = useState();
   const [stats, setStats] = useState();
   const [isOpen, setIsOpen] = useState();
+  const [events, setEvents] = useState();
   useEffect(() => {
     const init = async () => {
       // const result = await fetch("https://boulder.chriswait.net/api");
@@ -18,11 +20,13 @@ const App = () => {
         stats: newStats,
         mostRecentLog: newMostRecentLog,
         open: newIsOpen,
+        events: newEvents,
       } = await result.json();
       setGraph(newGraph);
       setStats(newStats);
       setMostRecentLog(newMostRecentLog);
       setIsOpen(newIsOpen);
+      setEvents(newEvents);
     };
     init();
     const interval = setInterval(async () => {
@@ -58,6 +62,7 @@ const App = () => {
           ) : (
             "No status"
           )}
+          {events ? <RouteSettingsEvents events={events} /> : "No status"}
         </div>
       )}
     </div>

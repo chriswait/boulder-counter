@@ -5,4 +5,5 @@ yarn-error.log
 dist
 stats.json
 graph.json
+events.json
 .DS_Store
