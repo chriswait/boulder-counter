@@ -20,4 +20,5 @@ export const heatMapColorforValue = (value) => {
   return "hsl(" + h + ", 80%, 70%)";
 };
 
-export const border = "2px solid #32308e";
+export const stroke = "#32308e";
+export const border = `2px solid ${stroke}`;

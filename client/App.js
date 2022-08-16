@@ -4,6 +4,7 @@ import Status from "./Status";
 import Graph from "./Graph";
 import Table from "./Table";
 import RouteSettingsEvents from "./RouteSettingsEvents";
+import { stroke } from "./util";
 
 const App = () => {
   const [graph, setGraph] = useState();
@@ -40,7 +41,7 @@ const App = () => {
   return (
     <div
       style={{
-        color: "#32308e",
+        color: stroke,
       }}
     >
       {!graph ? (

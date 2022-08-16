@@ -26,6 +26,12 @@ import { computeGraphDataForLog, computeStatsForLog } from "./util.js";
   const stats = computeStatsForLog(log);
   await fsPromises.writeFile("stats.json", JSON.stringify(stats));
 
-  const graph = computeGraphDataForLog(log);
+  const LAST_WEEK = new Date();
+  const LAST_WEEK_DATE = LAST_WEEK.getDate() - 7;
+  LAST_WEEK.setDate(LAST_WEEK_DATE);
+  const weekLog = await db.all(
+    `SELECT * FROM Logs where "when" > "${LAST_WEEK.toISOString()}"`
+  );
+  const graph = computeGraphDataForLog(weekLog);
   await fsPromises.writeFile("graph.json", JSON.stringify(graph));
 })();

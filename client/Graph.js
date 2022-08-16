@@ -8,10 +8,12 @@ import {
   Title,
   Tooltip,
   Legend,
+  Filler,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import "chartjs-adapter-date-fns";
 import Panel from "./Panel";
+import { stroke } from "./util";
 
 ChartJS.register(
   CategoryScale,
@@ -21,7 +23,8 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  Filler
 );
 
 const Graph = ({ graph }) => {
@@ -37,23 +40,35 @@ const Graph = ({ graph }) => {
               radius: 0,
             },
             line: {
-              borderColor: "#32308e",
+              borderColor: stroke,
+              fill: {
+                target: "origin",
+                above: stroke,
+              },
             },
+          },
+          interaction: {
+            mode: "index",
           },
           plugins: {
             legend: {
               position: false,
             },
+            tooltip: {
+              intersect: false,
+              xAlign: "center",
+              yAlign: "bottom",
+            },
           },
           scales: {
-            y: {
-              beginAtZero: true,
-              stacked: false,
-            },
             x: {
               type: "time",
               time: {
-                unit: "hour",
+                tooltipFormat: "HH:mm",
+                unit: "day",
+                displayFormats: {
+                  day: "E",
+                },
               },
             },
           },
