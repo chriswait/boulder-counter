@@ -85,11 +85,13 @@ const Table = ({ stats, currentDay, currentHour }) => {
                         backgroundColor: average
                           ? heatMapColorforValue(average / 150)
                           : undefined,
-                        boxShadow: isCurrent
-                          ? "rgba(0, 0, 0, 50%) 0px 0px 6px 1px"
-                          : undefined,
-                        textDecoration:
-                          average && isCurrent ? "underline" : undefined,
+                        ...(isCurrent
+                          ? {
+                              boxShadow: "rgba(0, 0, 0, 50%) 0px 0px 6px 1px",
+                              textDecoration: average ? "underline" : undefined,
+                              position: "relative",
+                            }
+                          : {}),
                       }}
                     >
                       {average ?? "-"}
